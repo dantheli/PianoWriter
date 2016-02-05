@@ -188,6 +188,18 @@ class WriteViewController: UIViewController {
                 }
                 
                 // Play sound
+                if let audioFilePath = NSBundle.mainBundle().pathForResource("Piano.ff." + note.key, ofType: "mp3") {
+                    let audioFileUrl = NSURL.fileURLWithPath(audioFilePath)
+                    do {
+                        let player = try AVAudioPlayer(contentsOfURL: audioFileUrl)
+                        player.play()
+                        let fader = iiFaderForAvAudioPlayer(player: player)
+                        fader.fadeOut(0.5, velocity: 1.0, onFinished: nil)
+                    } catch {
+                        NSLog("AVAudioPlayer has failed to instantiate. Error details: ")
+                        print(error)
+                    }
+                }
             }
         }
     }

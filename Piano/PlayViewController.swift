@@ -125,7 +125,12 @@ class PlayViewController: UIViewController, AVAudioPlayerDelegate {
                         let audioFileUrl = NSURL.fileURLWithPath(audioFilePath)
                         do {
                             let player = try AVAudioPlayer(contentsOfURL: audioFileUrl)
-                            player.prepareToPlay()
+                            if !player.prepareToPlay() {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    print("prepareToPlay failed on " + note.key)
+                                    self.view.backgroundColor = UIColor.redColor()
+                                }
+                            }
                             player.delegate = self
                             players.append(player)
                         } catch {
